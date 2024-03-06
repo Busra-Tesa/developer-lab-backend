@@ -18,6 +18,26 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
+    lastname: {
+      type: String,
+      required: [true, "LastName is required."],
+    },
+    lastname: {
+      type: String,
+      required: [true, "Name is required."],
+    },
+    languages: {
+      type: String,
+      required: [true, "Languages is required."],
+    },
+    github: {
+      type: String,
+      required: [true, "GitHub is required."],
+    },
+    img: {
+      type: String,
+      required: [" Image is required."],
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`

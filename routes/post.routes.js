@@ -32,23 +32,50 @@ router.post('/post', (req, res, next) => {
         });
 });
 
-
-//GET Test method
-router.get("/comment",(req,res,next)=>{
-    res.send("it works");
-
-})
-// GET /api/comments -  Retrieves all comments
+// GET /api/post -  Retrieves all posts
 router.get('/post', (req, res, next) => {
     Post.find()
-      .populate('author')
-      .then((allPosts) => 
-      res.json(allPosts))
-      .catch((err) => {
-        console.log("Error while retriving posts", err);
-        res.status(500).json({ message: "Error while getting the posts" });
-      });
-  });
+        .populate('author')
+        .then((allPosts) =>
+            res.json(allPosts))
+        .catch((err) => {
+            console.log("Error while retriving posts", err);
+            res.status(500).json({ message: "Error while getting the posts" });
+        });
+});
 
+//   PUT/ update a post
+router.put('/post/:postId', (req, res, next) => {
+    const { postId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+        res.status(400).json({ message: 'Specified id is not valid' });
+        return;
+    }
+
+    Post.findByIdAndUpdate(postId, req.body, { new: true })
+        .then((updatedPost) => res.json(updatedPost))
+        .catch((err) => {
+            console.log("Error while updating the post", err);
+            res.status(500).json({ message: "Error while updating the post" });
+        });
+});
+//   DELETE/post
+
+router.delete('/post/:postId', (req, res, next) => {
+    const { postId } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
+        res.status(400).json({ message: 'Specified id is not valid' });
+        return;
+    }
+
+    Post.findByIdAndDelete(postId)
+        .then(() => res.json({ message: `Post with ${postId} is removed successfully.` }))
+        .catch((err) => {
+            console.log("Error while deleting the post", err);
+            res.status(500).json({ message: "Error while deleting the post" });
+        });
+});
 
 module.exports = router;

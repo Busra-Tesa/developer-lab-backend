@@ -76,7 +76,6 @@ router.put('/comment/:commentId', async (req, res, next) => {
 });
 
 //Delete/commens/commentId
-
   router.delete('/comment/:commentId', async (req, res, next) => {
     const { commentId } = req.params;
 

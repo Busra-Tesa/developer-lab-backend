@@ -50,7 +50,6 @@ router.put('/post/:postId', async (req, res, next) => {
         if (!mongoose.Types.ObjectId.isValid(postId)) {
             return res.status(400).json({ message: 'Specified id is not valid' });
         }
-
         const updatedPost = await Post.findByIdAndUpdate(postId, req.body, { new: true });
         res.json(updatedPost);
     } catch (error) {

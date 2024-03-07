@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const mongoose = require("mongoose");
 
 // TODO: Please make sure you edit the User model to whatever makes sense in this case
 const postSchema = new Schema(
@@ -14,11 +15,12 @@ const postSchema = new Schema(
     },
     date: {
       type: Date,
-      required: [true, "Date and Time is required."],
+      default:Date.now,
     },
     author: {
-        type:mongose.Types.ObjectId,
+        type:mongoose.Schema.Types.ObjectId,
         ref:'User',
+        required: true, 
    
     },
     category: {

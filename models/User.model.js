@@ -18,13 +18,10 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Name is required."],
     },
+    // when sign up i need to comment out from lastname until img ->check the bug
     lastname: {
       type: String,
       required: [true, "LastName is required."],
-    },
-    lastname: {
-      type: String,
-      required: [true, "Name is required."],
     },
     languages: {
       type: String,
@@ -36,7 +33,7 @@ const userSchema = new Schema(
     },
     img: {
       type: String,
-      required: [" Image is required."],
+      required: ["Image is required."],
     },
   },
   {

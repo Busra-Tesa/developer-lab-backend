@@ -18,10 +18,10 @@ const commentSchema = new Schema(
       type: Date,
       default:Date.now,
     },
-   post:{
-    type:mongoose.Schema.Types.ObjectId,
-    ref:'Post',
-   },
+    postId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+  },
     favorite: {
       type: Boolean,
     

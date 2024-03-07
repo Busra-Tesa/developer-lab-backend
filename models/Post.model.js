@@ -27,6 +27,8 @@ const postSchema = new Schema(
       type: String,enum:["Javascript","CSS","React","HTML"],
       required: [true, " Category is required."],
     },
+    comments:[{type:Schema.Types.ObjectId,
+    ref:'Comment'}]
    
   },
   {

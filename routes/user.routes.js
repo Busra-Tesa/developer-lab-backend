@@ -1,33 +1,6 @@
 const router = require('express').Router();
 const User = require("../models/User.model")
-//GET/all users
-router.get("/user",(req,res,next)=>{
-    
-    User.find()
-    .then((userFromDB) =>{
-        res.json(userFromDB);
-    })
-    .catch((e)=>{
-        console.log("Error getting list of the users");
-        console.log(e);
-        res.status(500).json({message:"Error getting list of users"})
 
-    });
-});
-// GET/user/:userId
-router.get("/user/:userId",(req,res,next)=>{
-    const {userId} = req.params;
-
-    User.findById({_id:userId})
-    .then((userDetails)=>{
-        res.json(userDetails);
-    })
-    .catch((e) =>{
-        console.log("Error on getting user details fitlering by id");
-        console.log(e)
-        res.status(500).json({message:"Error getting  of the user details when filtering by id"})  
-    });
-});
 
 //GET //users by name
 router.get("/user/:name",(req,res,next)=>{
@@ -90,5 +63,35 @@ router.get("/user/:langauges",(req,res,next)=>{
 
     });
 });
+// GET/user/:userId
+router.get("/user/:userId",(req,res,next)=>{
+    const {userId} = req.params;
+
+    User.findById({_id:userId})
+    .then((userDetails)=>{
+        res.json(userDetails);
+    })
+    .catch((e) =>{
+        console.log("Error on getting user details fitlering by id");
+        console.log(e)
+        res.status(500).json({message:"Error getting  of the user details when filtering by id"})  
+    });
+});
+
+//GET/all users
+router.get("/user",(req,res,next)=>{
+    
+    User.find()
+    .then((userFromDB) =>{
+        res.json(userFromDB);
+    })
+    .catch((e)=>{
+        console.log("Error getting list of the users");
+        console.log(e);
+        res.status(500).json({message:"Error getting list of users"})
+
+    });
+});
+
 
 module.exports = router;

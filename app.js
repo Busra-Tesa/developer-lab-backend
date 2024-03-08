@@ -9,8 +9,16 @@ require("./db");
 // https://www.npmjs.com/package/express
 const express = require("express");
 
+const cors = require('cors');
+
 const app = express();
 
+const corsOptions = {
+    origin: 'http://localhost:5175',
+    // Diğer özelleştirme seçenekleri...
+  };
+
+  app.use(cors(corsOptions));
 // ℹ️ This function is getting exported from the config folder. It runs most pieces of middleware
 require("./config")(app);
 

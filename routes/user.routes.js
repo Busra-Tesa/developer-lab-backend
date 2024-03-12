@@ -64,18 +64,23 @@ router.get("/user/:langauges",(req,res,next)=>{
     });
 });
 // GET/user/:userId
-router.get("/user/:userId",(req,res,next)=>{
-    const {userId} = req.params;
+router.get("/user/id/:userId", async (req, res, next) => {
+    try {
+        const { userId } = req.params;
 
-    User.findById({_id:userId})
-    .then((userDetails)=>{
+     
+        console.log("User ID:", userId);
+
+        const userDetails = await User.findById(userId);
+        if (!userDetails) {
+            return res.status(404).json({ message: "User not found" });
+        }
         res.json(userDetails);
-    })
-    .catch((e) =>{
-        console.log("Error on getting user details fitlering by id");
-        console.log(e)
-        res.status(500).json({message:"Error getting  of the user details when filtering by id"})  
-    });
+    } catch (e) {
+        console.log("Error on getting user details filtering by id");
+        console.log(e);
+        res.status(500).json({ message: "Error getting user details when filtering by id" });
+    }
 });
 
 //GET/all users

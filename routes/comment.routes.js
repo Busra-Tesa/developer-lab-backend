@@ -4,31 +4,36 @@ const Comment = require("../models/Comment.model")
 const Post = require("../models/Post.model")
 const User = require("../models/User.model")
 
+const {isAuthenticated} = require("../middleware/jwt.middleware");
+
 
 //POST/api/comment
-router.post('/comment', (req, res, next) => {
-    const { content, author, postId, favorite } = req.body;
+router.post('/comment', isAuthenticated, (req, res, next) => {
+
+    const { content, postId, favorite } = req.body;
+    const currentUserId = req.payload._id;
 
     // First lets check  if the author and the post are provided  by using their IDs
-    if (!mongoose.Types.ObjectId.isValid(author) || !mongoose.Types.ObjectId.isValid(postId)) {
+    if (!mongoose.Types.ObjectId.isValid(postId)) {
         return res.status(400).json({ message: "Invalid author or post ID" });
     }
 
     // Does the author exist in the db??
-    User.findById(author)
-        .then(existingAuthor => {
-            if (!existingAuthor) {
-                throw new Error("Author with specifiedd Id not found :"+author);
-            }
-            // Does this post exists in the database
-            return Post.findById(postId);
-        })
+    // User.findById(author)
+    //     .then(existingAuthor => {
+    //         if (!existingAuthor) {
+    //             throw new Error("Author with specifiedd Id not found :"+author);
+    //         }
+    //         // Does this post exists in the database
+    //         return Post.findById(postId);
+    //     })
+        Post.findById(postId)
         .then(existingPost => {
             if (!existingPost) {
                 throw new Error("Post with specifiedd Id not found:"+postId);
             }
             // Create the comment
-            return Comment.create({ content, favorite, author, postId });
+            return Comment.create({ content, favorite, author: currentUserId, postId });
         })
         .then(newComment => {
             res.json(newComment);

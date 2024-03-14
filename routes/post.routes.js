@@ -4,10 +4,10 @@ const User = require("../models/User.model")
 const Post = require("../models/Post.model")
 const Comment = require("../models/Comment.model")
 
-const {isAuthenticated} = require("../middleware/jwt.middleware");
+// const {isAuthenticated} = require("../middleware/jwt.middleware");
 
 //POST/api/comment
-router.post('/post',isAuthenticated, (req, res, next) => {
+router.post('/post', (req, res, next) => {
     const { title, content, author, category } = req.body;
 
     // First let's check if the author is provided by its ID
@@ -33,7 +33,7 @@ router.post('/post',isAuthenticated, (req, res, next) => {
 });
 
 // GET /api/post -  Retrieves all posts
-router.get('/post',isAuthenticated, (req, res, next) => {
+router.get('/post', (req, res, next) => {
     Post.find()
         .populate('author')
         .populate('comments')
@@ -46,7 +46,7 @@ router.get('/post',isAuthenticated, (req, res, next) => {
 });
 
 //   PUT/ update a post
-router.put('/post/:postId', isAuthenticated, async (req, res, next) => {
+router.put('/post/:postId', async (req, res, next) => {
     const { postId } = req.params;
 
     try {
@@ -62,7 +62,7 @@ router.put('/post/:postId', isAuthenticated, async (req, res, next) => {
 });
 //   DELETE/post
 
-router.delete('/post/:postId', isAuthenticated, async (req, res, next) => {
+router.delete('/post/:postId', async (req, res, next) => {
     const { postId } = req.params;
 
     try {

@@ -6,6 +6,7 @@ const User = require("../models/User.model")
 
 const {isAuthenticated} = require("../middleware/jwt.middleware");
 
+
 //POST/api/comment
 router.post('/comment', isAuthenticated, (req, res, next) => {
         console.log("req body",req.body);
@@ -16,6 +17,11 @@ router.post('/comment', isAuthenticated, (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(postId)) {
         return res.status(400).json({ message: "Invalid author or post ID" });
     }
+        // Post.findById(postId)
+        // .then(existingPost => {
+        //     if (!existingPost) {
+        //         throw new Error("Post with specifiedd Id not found:"+postId);
+        //     }
             // Create the comment
              Comment.create({ content, favorite, author: currentUserId, postId })
         
@@ -36,7 +42,7 @@ router.post('/comment', isAuthenticated, (req, res, next) => {
 });
 
 // GET /api/comments -  Retrieves all comments
-router.get('/comment', isAuthenticated, (req, res, next) => {
+router.get('/comment', (req, res, next) => {
     Comment.find()
       .populate('author')
       .populate('postId')
@@ -48,7 +54,7 @@ router.get('/comment', isAuthenticated, (req, res, next) => {
       });
   });
   //   PUT/ update a comment
-router.put('/comment/:commentId', isAuthenticated, async (req, res, next) => {
+router.put('/comment/:commentId', async (req, res, next) => {
     const { commentId } = req.params;
 
     try {
@@ -65,7 +71,7 @@ router.put('/comment/:commentId', isAuthenticated, async (req, res, next) => {
 });
 
 //Delete/commens/commentId
-  router.delete('/comment/:commentId',isAuthenticated, async (req, res, next) => {
+  router.delete('/comment/:commentId', async (req, res, next) => {
     const { commentId } = req.params;
 
     try {

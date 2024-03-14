@@ -6,10 +6,9 @@ const User = require("../models/User.model")
 
 const {isAuthenticated} = require("../middleware/jwt.middleware");
 
-
 //POST/api/comment
 router.post('/comment', isAuthenticated, (req, res, next) => {
-
+        console.log("req body",req.body);
     const { content, postId, favorite } = req.body;
     const currentUserId = req.payload._id;
 
@@ -17,26 +16,18 @@ router.post('/comment', isAuthenticated, (req, res, next) => {
     if (!mongoose.Types.ObjectId.isValid(postId)) {
         return res.status(400).json({ message: "Invalid author or post ID" });
     }
-
-    // Does the author exist in the db??
-    // User.findById(author)
-    //     .then(existingAuthor => {
-    //         if (!existingAuthor) {
-    //             throw new Error("Author with specifiedd Id not found :"+author);
-    //         }
-    //         // Does this post exists in the database
-    //         return Post.findById(postId);
-    //     })
-        Post.findById(postId)
-        .then(existingPost => {
-            if (!existingPost) {
-                throw new Error("Post with specifiedd Id not found:"+postId);
-            }
             // Create the comment
-            return Comment.create({ content, favorite, author: currentUserId, postId });
-        })
+             Comment.create({ content, favorite, author: currentUserId, postId })
+        
         .then(newComment => {
-            res.json(newComment);
+           
+            return Post.findByIdAndUpdate(newComment.postId,{$push:{comments:newComment._id}})
+
+                        
+        })
+        .then(()=>{
+
+                res.status(201).json("The post was successfully created");
         })
         .catch(error => {
             console.error("Error while creating the comment", error);
@@ -44,13 +35,6 @@ router.post('/comment', isAuthenticated, (req, res, next) => {
         });
 });
 
-
-
-//GET Test method
-// router.get("/comment",(req,res,next)=>{
-//     res.send("it works");
-
-// })
 // GET /api/comments -  Retrieves all comments
 router.get('/comment', (req, res, next) => {
     Comment.find()

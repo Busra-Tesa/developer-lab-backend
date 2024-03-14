@@ -34,6 +34,7 @@ router.post('/post', (req, res, next) => {
 router.get('/post', (req, res, next) => {
     Post.find()
         .populate('author')
+        .populate('comments')
         .then((allPosts) =>
             res.json(allPosts))
         .catch((err) => {
@@ -89,7 +90,8 @@ router.get('/post/:postId', (req,res,next)=>{
     }
 
     Post.findById(postId)
-    .populate('author','comment')
+    .populate('author')
+    .populate('comments')
     .then((post)=>res.status(200).json(post))
     .catch((e)=>{
         console.log('Error while retrieving the project', e);

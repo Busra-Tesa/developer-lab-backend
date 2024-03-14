@@ -36,7 +36,7 @@ router.post('/comment', isAuthenticated, (req, res, next) => {
 });
 
 // GET /api/comments -  Retrieves all comments
-router.get('/comment', (req, res, next) => {
+router.get('/comment', isAuthenticated, (req, res, next) => {
     Comment.find()
       .populate('author')
       .populate('postId')
@@ -48,7 +48,7 @@ router.get('/comment', (req, res, next) => {
       });
   });
   //   PUT/ update a comment
-router.put('/comment/:commentId', async (req, res, next) => {
+router.put('/comment/:commentId', isAuthenticated, async (req, res, next) => {
     const { commentId } = req.params;
 
     try {
@@ -65,7 +65,7 @@ router.put('/comment/:commentId', async (req, res, next) => {
 });
 
 //Delete/commens/commentId
-  router.delete('/comment/:commentId', async (req, res, next) => {
+  router.delete('/comment/:commentId',isAuthenticated, async (req, res, next) => {
     const { commentId } = req.params;
 
     try {
